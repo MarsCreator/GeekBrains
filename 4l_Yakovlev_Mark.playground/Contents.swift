@@ -11,10 +11,6 @@ enum CarEngineState{
     case on, off
 }
 
-enum CarDoorState{
-    case open, close
-}
-
 enum CarWindowState{
     case open, close
 }
