@@ -11,83 +11,92 @@ enum CarEngineState{
     case on, off
 }
 
-enum CarDoorState{
-    case open, close
-}
-
 enum CarWindowState{
     case open, close
 }
 
-class Car {
+struct SportCar {
     let brand: String
     let year: Int
     let trunkVolume: Int
-    var trunkFullness: Int
-    var engineState: CarEngineState
-    var windowState: CarWindowState
+    var sportCarFullness: Int
+    
+    var CarEngineState : CarEngineState {
+        willSet {
+            if newValue == .on {
+                print ("\(brand) - двигатель включен")
+            } else {print("\(brand) - двигатель выключен")}
+        }
+    }
+    
+    var CarWindowState : CarWindowState {
+        willSet {
+            if newValue == .open {
+                print("\(brand) - окна открыты")
+            } else { print("\(brand) - окна закрыты") }
+        }
+    }
 
-    init(brand: String, year: Int, trunkVolume: Int, trunkFullness: Int, engineState: CarEngineState, windowState: CarWindowState) {
-        self.brand = brand
-        self.year = year
-        self.trunkVolume = trunkVolume
-        self.trunkFullness = trunkFullness
-        self.engineState = engineState
-        self.windowState = windowState
-    }
-    
-    func openWindows() {
-        windowState = .open
-        print("Окна открыты")
-    }
-    
-    func closeWindows() {
-        windowState = .close
-        print("Окна закрыты")
-    }
-    
-    func addBaggage(baggageWeight: Int) {
-        if (self.trunkFullness+baggageWeight > self.trunkVolume) {
+    mutating func addBaggage(baggageWeight: Int) {
+        if (self.sportCarFullness+baggageWeight > self.trunkVolume) {
             print("Добавить багаж невозможно, багажник переполнен")
         } else {
-            self.trunkFullness += baggageWeight;
-            print("Багажник заполнен на \(self.trunkFullness) из \(self.trunkVolume)")
+            self.sportCarFullness += baggageWeight;
+            print("Багажник заполнен на \(self.sportCarFullness) из \(self.trunkVolume)")
         }
     }
 }
 
-class SportCar: Car{
-    var maxSpeed: Int
-    init(maxSpeed: Int, brand: String, year: Int, trunkVolume: Int, trunkFullness: Int, engineState: CarEngineState, windowState: CarWindowState){
-        self.maxSpeed = maxSpeed
-        super.init(brand: brand, year: year, trunkVolume: trunkVolume, trunkFullness: trunkFullness, engineState: engineState, windowState: windowState)
+struct TrunkCar {
+    let brand: String
+    let year: Int
+    let trunkVolume: Int
+    var trunkCarFullness: Int
+
+    var CarEngineState : CarEngineState {
+        willSet {
+            if newValue == .on {
+                print ("\(brand) - двигатель включен")
+            } else {print("\(brand) - двигатель выключен")}
+        }
     }
     
-    override func openWindows() {
-        super.openWindows()
-        print("Закройте окна")
+    var CarWindowState : CarWindowState {
+        willSet {
+            if newValue == .open {
+                print("\(brand) - окна открыты")
+            } else { print("\(brand) - окна закрыты") }
+        }
+    }
+
+    mutating func addBaggage(baggageWeight: Int) {
+        if (self.trunkCarFullness+baggageWeight > self.trunkVolume) {
+            print("Добавить багаж невозможно, багажник переполнен")
+        } else {
+            self.trunkCarFullness += baggageWeight;
+            print("Багажник заполнен на \(self.trunkCarFullness) из \(self.trunkVolume)")
+        }
     }
 }
 
-class TrunkCar: Car{
-    var passengerSeats: Int
-    
-    init(passengerSeats: Int, brand: String, year: Int, trunkVolume: Int, trunkFullness: Int, engineState: CarEngineState, windowState: CarWindowState){
-        self.passengerSeats = passengerSeats
-        super.init(brand: brand, year: year, trunkVolume: trunkVolume, trunkFullness: trunkFullness, engineState: engineState, windowState: windowState)
-    }
-}
-
-var myBmw = SportCar(maxSpeed: 250, brand: "BMW", year: 2014, trunkVolume: 80, trunkFullness: 10, engineState: .on, windowState: .open)
+var myBmw = SportCar(brand: "BMW", year: 2014, trunkVolume: 80, sportCarFullness: 10, CarEngineState: .on, CarWindowState: .open)
 print(myBmw.brand)
-print(myBmw.windowState)
-print(myBmw.openWindows())
-print(myBmw.trunkFullness)
-myBmw.addBaggage(baggageWeight: 100)
-myBmw.addBaggage(baggageWeight: 10)
+print(myBmw.CarWindowState)
+myBmw.CarWindowState = .close
+print(myBmw.CarWindowState)
+print(myBmw.sportCarFullness)
+myBmw.addBaggage(baggageWeight: 1000)
+print(myBmw.sportCarFullness)
+myBmw.addBaggage(baggageWeight: 30)
+print(myBmw.sportCarFullness)
 
-var deliveryCar = TrunkCar(passengerSeats: 2, brand: "Ford", year: 2007, trunkVolume: 380, trunkFullness: 50, engineState: .on, windowState: .open)
+var deliveryCar = TrunkCar(brand: "Ford", year: 2007, trunkVolume: 800, trunkCarFullness: 100, CarEngineState: .on, CarWindowState: .open)
 print(deliveryCar.brand)
-print(deliveryCar.passengerSeats)
-deliveryCar.addBaggage(baggageWeight: 200)
-print(deliveryCar.trunkFullness)
+print(deliveryCar.CarWindowState)
+deliveryCar.CarWindowState = .close
+print(deliveryCar.CarWindowState)
+print(deliveryCar.trunkCarFullness)
+deliveryCar.addBaggage(baggageWeight: 1000)
+print(deliveryCar.trunkCarFullness)
+deliveryCar.addBaggage(baggageWeight: 30)
+print(deliveryCar.trunkCarFullness)
