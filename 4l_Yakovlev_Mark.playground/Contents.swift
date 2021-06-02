@@ -76,6 +76,10 @@ class TrunkCar: Car{
         self.passengerSeats = passengerSeats
         super.init(brand: brand, year: year, trunkVolume: trunkVolume, trunkFullness: trunkFullness, engineState: engineState, windowState: windowState)
     }
+    
+    override func openWindows() {
+        print("Окно сломано, открыть невозможно")
+    }
 }
 
 var myBmw = SportCar(maxSpeed: 250, brand: "BMW", year: 2014, trunkVolume: 80, trunkFullness: 10, engineState: .on, windowState: .open)
@@ -86,8 +90,10 @@ print(myBmw.trunkFullness)
 myBmw.addBaggage(baggageWeight: 100)
 myBmw.addBaggage(baggageWeight: 10)
 
-var deliveryCar = TrunkCar(passengerSeats: 2, brand: "Ford", year: 2007, trunkVolume: 380, trunkFullness: 50, engineState: .on, windowState: .open)
+var deliveryCar = TrunkCar(passengerSeats: 2, brand: "Ford", year: 2007, trunkVolume: 380, trunkFullness: 50, engineState: .on, windowState: .close)
 print(deliveryCar.brand)
 print(deliveryCar.passengerSeats)
 deliveryCar.addBaggage(baggageWeight: 200)
 print(deliveryCar.trunkFullness)
+print(deliveryCar.windowState)
+print(deliveryCar.openWindows())
